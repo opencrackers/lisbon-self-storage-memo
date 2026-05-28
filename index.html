@@ -1,0 +1,944 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lisbon Self-Storage Opportunity Analysis</title>
+  <style>
+    :root {
+      --ink: #17202a;
+      --muted: #687385;
+      --line: #d9dee7;
+      --panel: #f6f8fb;
+      --panel-2: #eef5f2;
+      --accent: #0b6b57;
+      --accent-2: #c35a2e;
+      --warn: #8b3b2f;
+      --good: #176b41;
+      --white: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-padding-top: 74px; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: #ffffff;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.48;
+    }
+
+    header {
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(90deg, rgba(11, 107, 87, .12), rgba(195, 90, 46, .08)),
+        #fbfcfd;
+    }
+
+    .wrap {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .hero {
+      min-height: 82vh;
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(320px, .92fr);
+      gap: 44px;
+      align-items: center;
+      padding: 54px 0 38px;
+    }
+
+    .kicker {
+      margin: 0 0 10px;
+      color: var(--accent);
+      font-weight: 750;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      font-size: 13px;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 900px;
+      font-size: clamp(40px, 6vw, 76px);
+      line-height: .96;
+      letter-spacing: 0;
+    }
+
+    .lede {
+      max-width: 760px;
+      margin: 22px 0 0;
+      color: #334155;
+      font-size: 19px;
+    }
+
+    .verdict {
+      margin-top: 30px;
+      padding: 22px;
+      border-left: 5px solid var(--accent-2);
+      background: var(--white);
+      box-shadow: 0 10px 30px rgba(17, 24, 39, .08);
+    }
+
+    .verdict strong { color: var(--accent-2); }
+
+    .hero-metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .metric {
+      min-height: 124px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      background: var(--white);
+    }
+
+    .metric b {
+      display: block;
+      font-size: 30px;
+      line-height: 1;
+      color: var(--accent);
+    }
+
+    .metric span {
+      display: block;
+      margin-top: 9px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, .94);
+      backdrop-filter: blur(12px);
+    }
+
+    nav .wrap {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 10px 0;
+    }
+
+    nav a {
+      flex: 0 0 auto;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 14px;
+      background: #fff;
+    }
+
+    section {
+      padding: 52px 0;
+      border-bottom: 1px solid var(--line);
+      scroll-margin-top: 74px;
+    }
+
+    h2 {
+      margin: 0 0 18px;
+      font-size: 30px;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      letter-spacing: 0;
+    }
+
+    p { margin: 0 0 14px; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .two {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      background: var(--white);
+      padding: 20px;
+    }
+
+    .card.tint { background: var(--panel); }
+    .card.green { background: var(--panel-2); }
+    .card.warning { border-color: #e0b4a1; background: #fff7f2; }
+
+    ul {
+      margin: 10px 0 0;
+      padding-left: 20px;
+    }
+
+    li { margin: 7px 0; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      background: #fff;
+    }
+
+    th, td {
+      padding: 12px 10px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      color: #334155;
+      background: var(--panel);
+      font-weight: 750;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 3px 8px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: #334155;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .tag.good { border-color: #9bc6ae; color: var(--good); background: #eef8f1; }
+    .tag.bad { border-color: #d8a39b; color: var(--warn); background: #fff3f1; }
+    .tag.mid { border-color: #d7c28b; color: #6b520f; background: #fff9df; }
+
+    .bar {
+      height: 11px;
+      background: #e8edf3;
+      margin-top: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bar span {
+      display: block;
+      height: 100%;
+      background: var(--accent);
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    label {
+      display: grid;
+      gap: 7px;
+      font-size: 14px;
+      color: #334155;
+    }
+
+    input[type="range"] { width: 100%; }
+
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin: 0;
+    }
+
+    .check-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #334155;
+      font-size: 14px;
+    }
+
+    .result {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .result .metric {
+      min-height: 108px;
+      background: var(--panel);
+    }
+
+    .small {
+      color: #4f5b6c;
+      font-size: 13px;
+    }
+
+    .source-list a {
+      color: var(--accent);
+      word-break: break-word;
+    }
+
+    .rank {
+      display: grid;
+      gap: 12px;
+    }
+
+    .rank-item {
+      display: grid;
+      grid-template-columns: 70px 1fr 120px;
+      gap: 14px;
+      align-items: center;
+      padding: 14px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .rank-item b {
+      color: var(--accent);
+      font-size: 22px;
+    }
+
+    footer {
+      padding: 30px 0 52px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 860px) {
+      .hero, .two, .grid, .controls, .result {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        min-height: auto;
+        gap: 28px;
+        padding: 42px 0 28px;
+      }
+
+      .hero-metrics {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .rank-item {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .wrap { width: min(100% - 22px, 1180px); }
+      .hero-metrics { grid-template-columns: 1fr; }
+      h1 { font-size: 38px; }
+      .lede { font-size: 17px; }
+      th, td { padding: 9px 7px; font-size: 13px; }
+    }
+
+    @media print {
+      body { color: #000; background: #fff; }
+      header { background: #fff; }
+      nav {
+        position: static;
+        border: 0;
+        background: #fff;
+        backdrop-filter: none;
+      }
+      nav .wrap { display: none; }
+      section {
+        padding: 28px 0;
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+      .card, .metric, .verdict, table {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+      .hero {
+        min-height: auto;
+        grid-template-columns: 1fr;
+      }
+      a {
+        color: #000;
+        text-decoration: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap hero">
+      <div>
+        <p class="kicker">Investment memo · Greater Lisbon · May 2026</p>
+        <h1>Self-storage looks possible, but only with a cheap conversion site.</h1>
+        <p class="lede">For a 2,000sqm+ first site around Cascais/Sintra or Almada/Caparica, the attractive play is not a generic land purchase. It is an underpriced warehouse or light-industrial conversion with clean use permissions, visible road access, and enough catchment demand to reach 80%+ occupancy without heavy staffing.</p>
+        <div class="verdict">
+          <strong>Base verdict:</strong> pursue only if all-in project cost lands below roughly <strong>€1,500 per gross building sqm</strong> for conversion. At 65% net-rentable efficiency and 50% debt, that means roughly <strong>€1,150 of equity per net rentable sqm</strong>. Above that basis, the yield gets too close to industrial real-estate returns while you still carry operating, marketing, licensing, and ramp-up risk.
+        </div>
+      </div>
+      <div class="hero-metrics">
+        <div class="metric"><b>€18-28</b><span>Likely blended monthly rent per rentable sqm for suburban Lisbon self-storage. Small units price much higher; large business units price lower.</span></div>
+        <div class="metric"><b>55-65%</b><span>Realistic stabilized NOI margin for a small low-staff Portuguese operation. Mature REITs can be higher, but do not underwrite that on site one.</span></div>
+        <div class="metric"><b>24-36 mo.</b><span>Reasonable ramp to stabilized occupancy unless the site is already visible and demand is proven before launch.</span></div>
+        <div class="metric"><b>5-7%</b><span>Likely floating debt range today: 12-month Euribor is about 2.9%, while 3M/6M tenors used by many Portuguese commercial loans are lower, plus SME/commercial real-estate spread and fees.</span></div>
+      </div>
+    </div>
+  </header>
+
+  <nav>
+    <div class="wrap">
+      <a href="#thesis">Thesis</a>
+      <a href="#market">Market</a>
+      <a href="#competitors">Competitors</a>
+      <a href="#models">International Models</a>
+      <a href="#strategies">Strategies</a>
+      <a href="#calculator">Calculator</a>
+      <a href="#risks">Portugal Risks</a>
+      <a href="#next">Next Steps</a>
+    </div>
+  </nav>
+
+  <main>
+    <section id="thesis">
+      <div class="wrap">
+        <h2>Critical Thesis</h2>
+        <div class="two">
+          <div class="card green">
+            <h3>Where I see opportunity</h3>
+            <ul>
+              <li><strong>Cascais town / Abóboda / Alcabideche / São Domingos de Rana:</strong> strong household wealth, expat/renovation/seasonal-home demand, and a clearer convenience gap than the already-served inner Cascais-line corridor.</li>
+              <li><strong>Specific Sintra micro-catchments near IC19/A16:</strong> cheaper industrial stock, dense population, small-business demand, but Bluespace already operates in Massamá, so the opportunity has to be site-specific rather than a broad "Sintra is empty" thesis.</li>
+              <li><strong>Caparica/Monte de Caparica:</strong> possible gap for residents, seasonal operators, surf/tourism businesses, students, and small trades. Needs very careful competition check because Almada/Cacilhas is already served.</li>
+            </ul>
+          </div>
+          <div class="card warning">
+            <h3>Where I would be careful</h3>
+            <ul>
+              <li><strong>Buying land to build new:</strong> likely too slow and uncertain for a first site. Planning time and construction cost can erase the benefit of operating leverage.</li>
+              <li><strong>Prime industrial warehouses:</strong> if the building is good enough for logistics users, you will compete with logistics rents and yields. Self-storage only wins if retail storage rent materially beats industrial rent after conversion cost.</li>
+              <li><strong>Central Lisbon logic applied to suburbs:</strong> online competitor prices look high, but large units and discounting pull the blended rate down.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="grid" style="margin-top:16px">
+          <div class="card">
+            <h3>Go condition</h3>
+            <p>All-in cost below €1,500/gross sqm, zoning/use class already compatible with storage, fire-safety route clear, and at least 1,300sqm net rentable from a 2,000sqm building.</p>
+          </div>
+          <div class="card">
+            <h3>No-go condition</h3>
+            <p>Warehouse acquisition above €1,600-1,800/gross sqm before fit-out, weak road visibility, no 24/7 access, or any need for a speculative use-class battle with the municipality.</p>
+          </div>
+          <div class="card">
+            <h3>Best first move</h3>
+            <p>Lease-option or purchase-option a neglected warehouse for 6-12 months while you pre-sell units, validate search demand, and complete licensing/fire due diligence.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="market">
+      <div class="wrap">
+        <h2>Market Logic</h2>
+        <div class="two">
+          <div class="card">
+            <h3>Demand drivers around Lisbon</h3>
+            <ul>
+              <li>Expensive housing and smaller flats create persistent overflow storage demand.</li>
+              <li>Renovations, moving, separations, expat relocation, and seasonal property use create short-term consumer demand.</li>
+              <li>E-commerce sellers, trades, restaurants, events, and tourism operators create small-business demand.</li>
+              <li>Suburban car access matters more than central foot traffic for large units.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Supply signal</h3>
+            <p>Lisbon already has professional operators, and the coverage is less thin than a first pass suggests. Bluespace now shows seven Lisbon-area centres, including Massamá in Sintra municipality and Carnaxide/Alfragide on the Lisbon-Cascais corridor. Cascais town proper still looks more interesting than the corridor, while Almada is more competitive, with Allstorage and Stokarea already advertising south-bank coverage.</p>
+            <p class="small">Interpretation: the gap is not "Lisbon has no storage" or even "Sintra/Cascais line is empty". The gap, if it exists, is in very specific micro-catchments with convenient access, enough population, low direct supply, and credible pricing.</p>
+          </div>
+        </div>
+        <div class="card tint" style="margin-top:18px">
+          <h3>Demand sizing test</h3>
+          <p>The missing diligence item is supply per capita inside the real catchment, usually a 3-5 km drive radius or a 10-15 minute drive-time polygon. For any candidate site, calculate:</p>
+          <p><strong>absorbable demand = catchment population × target rentable sqm per capita − existing competitor rentable sqm in that catchment.</strong></p>
+          <p>Example screen: a 100,000-person catchment at 0.02 sqm/capita implies 2,000sqm of market demand before subtracting existing centres. If mapped competitor supply inside the catchment is already 1,200sqm, the residual is only 800sqm and a 1,300sqm net-rentable first site needs a stronger business-customer angle or wider draw. This is the number that defends, or kills, the 80-85% stabilized occupancy assumption.</p>
+          <p class="small">FEDESSA/CBRE's 2025 European benchmark, roughly €312.56/sqm/year average rent and about 81% average occupancy, supports the €23/sqm/month default as conservative for a suburban Portuguese site, but it does not replace catchment-level demand sizing.</p>
+        </div>
+        <table style="margin-top:18px">
+          <thead>
+            <tr>
+              <th>Area</th>
+              <th>Demand quality</th>
+              <th>Competition</th>
+              <th>Real-estate cost</th>
+              <th>Preliminary score</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Cascais town / Abóboda / Alcabideche</td>
+              <td>High household wealth, renovations, expats, seasonal homes</td>
+              <td>Moderate: Kuboo/nearby Oeiras/Cascais-line options</td>
+              <td>High</td>
+              <td><span class="tag good">Best if cheap site found</span></td>
+            </tr>
+            <tr>
+              <td>Sintra / Cacém / Rio de Mouro</td>
+              <td>Dense population plus small businesses</td>
+              <td>Moderate; Bluespace already in Massamá</td>
+              <td>Medium</td>
+              <td><span class="tag mid">Needs micro-catchment proof</span></td>
+            </tr>
+            <tr>
+              <td>Caparica / Monte de Caparica</td>
+              <td>Seasonal/tourism/student/small-business niche</td>
+              <td>Some gap, but Almada operators nearby</td>
+              <td>Medium-high near coast</td>
+              <td><span class="tag mid">Needs proof</span></td>
+            </tr>
+            <tr>
+              <td>Cacilhas / central Almada</td>
+              <td>Urban density, easier acquisition</td>
+              <td>Direct competition already present</td>
+              <td>Medium</td>
+              <td><span class="tag mid">Only with superior site</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="competitors">
+      <div class="wrap">
+        <h2>Competitor Price Check</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Operator/source</th>
+              <th>Relevant area</th>
+              <th>Published price signal</th>
+              <th>What it means for underwriting</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Allstorage</td>
+              <td>Lisbon, Almada, Algés</td>
+              <td>1-2sqm from €65/mo; 3-5sqm from €84; 6-10sqm from €144; 11-20sqm from €218; 20sqm+ from €313</td>
+              <td>Small units can exceed €30/sqm/mo. Large units likely under €16-20/sqm/mo. Use a blended stabilized rent, not the headline small-unit rent.</td>
+            </tr>
+            <tr>
+              <td>Stokarea</td>
+              <td>Cacilhas/Almada; Sintra served via nearby units</td>
+              <td>Cacilhas unit advertises 24h access, CCTV, insurance; Sintra page says boxes from €52/mo and 1-25sqm.</td>
+              <td>Professional product is already in the market. You need location convenience or lower customer acquisition cost, not just "storage exists".</td>
+            </tr>
+            <tr>
+              <td>Box2Box market guide</td>
+              <td>Cascais/Lisbon</td>
+              <td>Cascais traditional storage range: 1sqm €50-70; 2sqm €70-100; 3sqm €95-130; 5sqm €140-200.</td>
+              <td>Cascais price ceiling is attractive, but guide also says Cascais town lacks dedicated centres, so the opportunity is local convenience.</td>
+            </tr>
+            <tr>
+              <td>Kuboo / OrangeSpace / Bluespace</td>
+              <td>Cascais line, Sintra-Cascais, Seixal, Lisbon</td>
+              <td>Kuboo publicly claims 3 centres and 3,000+ units; Bluespace lists 7 Lisbon-area centres: Montijo, Vasco da Gama, Massamá, Telheiras, Alfragide, Carnaxide, and Anjos; OrangeSpace covers Massamá/Sintra-Cascais and Barreiro.</td>
+              <td>The market is not empty. Bluespace is already inside two preferred zones, so a new entrant needs uncovered micro-catchments, automation, SEO, and business-unit packaging.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="models">
+      <div class="wrap">
+        <h2>International Operating Models</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>US REIT model</h3>
+            <p>Public Storage and Extra Space scale through ownership, acquisitions, development, revenue management, national marketing, and ancillary income. Public Storage's 2025 average same-store occupancy was around 92%, and its same-store NOI margin was about 78% in late-2025 reporting.</p>
+            <div class="bar"><span style="width:78%"></span></div>
+            <p class="small">Mature margin benchmark: high, but not realistic for a first Portugal site.</p>
+          </div>
+          <div class="card">
+            <h3>European operator model</h3>
+            <p>Shurgard, Bluespace and similar operators pursue dense urban/suburban catchments, premium security, web-led acquisition, revenue management, and either freehold or long leasehold property. Europe is less penetrated than the US, so growth runway exists.</p>
+            <div class="bar"><span style="width:62%"></span></div>
+            <p class="small">Likely target margin for a small Portuguese site: 55-65% NOI when stabilized.</p>
+          </div>
+          <div class="card">
+            <h3>Low-staff automation model</h3>
+            <p>Online booking, remote KYC, smart locks/access code, CCTV, alarms, digital contracts, card billing, and call-centre support. This suits Portugal if the first site is simple and customers can access units without staff.</p>
+            <div class="bar"><span style="width:68%"></span></div>
+            <p class="small">Best fit for Julian: operationally lean, but front-loaded capex and tech discipline matter.</p>
+          </div>
+        </div>
+        <div class="card tint" style="margin-top:18px">
+          <h3>How they finance</h3>
+          <p>Large operators use a mix of retained cash flow, bank debt, bonds, equity issuance, joint ventures, and acquisitions. Small operators usually use bank leverage against the property plus founder equity. For Portugal today, underwriting should assume Euribor-linked debt around 5-7% all-in, with lower leverage until the bank sees proven cash flow. Key the floating-rate case to the tenor the bank actually uses, usually 3M or 6M Euribor rather than 12M. A new site may get 50-60% loan-to-cost; a stabilized property might refinance higher if DSCR is strong.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="strategies">
+      <div class="wrap">
+        <h2>Strategy Ranking</h2>
+        <div class="rank">
+          <div class="rank-item">
+            <b>#1</b>
+            <div>
+              <h3>Buy or option an old warehouse/factory and convert</h3>
+              <p>Best balance of speed, capex, and control. Focus on clean road access, high ceiling, dry building, fire compliance, no residential neighbours, and enough parking/loading.</p>
+            </div>
+            <span class="tag good">Preferred</span>
+          </div>
+          <div class="rank-item">
+            <b>#2</b>
+            <div>
+              <h3>Lease with purchase option</h3>
+              <p>Lower initial risk and lets you validate demand. Downside: landlord captures part of the upside, and self-storage partitions/access systems are tenant-specific capex.</p>
+            </div>
+            <span class="tag good">Smart first test</span>
+          </div>
+          <div class="rank-item">
+            <b>#3</b>
+            <div>
+              <h3>Outdoor container storage / contractor storage</h3>
+              <p>Could work on cheaper industrial land, especially for trades, events, boards, bikes, motorbikes, and seasonal stock. Lower capex but lower brand quality and more planning/security issues.</p>
+            </div>
+            <span class="tag mid">Niche</span>
+          </div>
+          <div class="rank-item">
+            <b>#4</b>
+            <div>
+              <h3>Buy land and build new self-storage</h3>
+              <p>Probably too slow for a first deal in Cascais/Sintra/Almada unless the land is already industrial/logistics-zoned, cheap, and close to a major road.</p>
+            </div>
+            <span class="tag bad">High risk</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="calculator">
+      <div class="wrap">
+        <h2>Interactive Base Case</h2>
+        <p>Default case: 2,000sqm warehouse conversion, 65% net-rentable efficiency, 85% stabilized occupancy, €23/sqm/month blended rent, 60% stabilized NOI margin, 60% debt, 6.25% interest, 20-year amortisation, and a 30% / 55% / 80% lease-up curve over the first three years.</p>
+        <div class="card tint" style="margin-bottom:18px">
+          <h3>Property screen</h3>
+          <p class="small">Use this to test a real building. Acquisition tax assumes 6.5% IMT + 0.8% stamp duty on the purchase price. Fit-out VAT is treated as recoverable by default, but tenant-facing rent still carries 23% VAT, which hurts consumer affordability more than business demand.</p>
+          <div class="controls">
+            <label>Use property screen
+              <span class="check-row"><input id="useProperty" type="checkbox" checked> Calculate project cost from price + fit-out</span>
+            </label>
+            <label>Purchase price (€m)
+              <input id="purchase" type="range" min="0.8" max="5.5" step="0.1" value="2.0">
+              <span id="purchaseVal"></span>
+            </label>
+            <label>Fit-out cost (€/gross sqm)
+              <input id="fitout" type="range" min="250" max="900" step="25" value="425">
+              <span id="fitoutVal"></span>
+            </label>
+            <label>Contingency / soft costs
+              <input id="soft" type="range" min="5" max="25" step="1" value="12">
+              <span id="softVal"></span>
+            </label>
+            <label>Recover input VAT on fit-out
+              <span class="check-row"><input id="recoverVat" type="checkbox" checked> Treat fit-out VAT as recoverable working capital</span>
+            </label>
+            <label>Exit cap rate
+              <input id="exitCap" type="range" min="6" max="9" step="0.25" value="7.25">
+              <span id="exitCapVal"></span>
+            </label>
+          </div>
+        </div>
+        <div class="controls">
+          <label>All-in project cost (€m)
+            <input id="cost" type="range" min="1.6" max="4.6" step="0.1" value="2.8">
+            <span id="costVal"></span>
+          </label>
+          <label>Blended rent (€/rentable sqm/mo)
+            <input id="rent" type="range" min="14" max="34" step="1" value="23">
+            <span id="rentVal"></span>
+          </label>
+          <label>Stabilized occupancy
+            <input id="occ" type="range" min="60" max="95" step="1" value="85">
+            <span id="occVal"></span>
+          </label>
+          <label>Net rentable efficiency
+            <input id="eff" type="range" min="55" max="78" step="1" value="65">
+            <span id="effVal"></span>
+          </label>
+          <label>NOI margin
+            <input id="margin" type="range" min="45" max="75" step="1" value="60">
+            <span id="marginVal"></span>
+          </label>
+          <label>Debt share
+            <input id="debt" type="range" min="0" max="70" step="5" value="60">
+            <span id="debtVal"></span>
+          </label>
+          <label>Interest rate
+            <input id="rate" type="range" min="4" max="9" step="0.25" value="6.25">
+            <span id="rateVal"></span>
+          </label>
+          <label>Gross building sqm
+            <input id="sqm" type="range" min="1200" max="5000" step="100" value="2000">
+            <span id="sqmVal"></span>
+          </label>
+          <label>Ancillary income uplift
+            <input id="anc" type="range" min="0" max="12" step="1" value="5">
+            <span id="ancVal"></span>
+          </label>
+        </div>
+        <div class="result" aria-live="polite">
+          <div class="metric"><b id="revOut"></b><span>Stabilized annual revenue</span></div>
+          <div class="metric"><b id="noiOut"></b><span>Annual NOI</span></div>
+          <div class="metric"><b id="yieldOut"></b><span>NOI yield on cost</span></div>
+          <div class="metric"><b id="cashOut"></b><span>Cash-on-cash on real equity</span></div>
+        </div>
+        <div class="result" aria-live="polite">
+          <div class="metric"><b id="equityOut"></b><span>Equity before reserves</span></div>
+          <div class="metric"><b id="debtOut"></b><span>Debt amount</span></div>
+          <div class="metric"><b id="dsOut"></b><span>Annual debt service</span></div>
+          <div class="metric"><b id="dscrOut"></b><span>Stabilized DSCR</span></div>
+        </div>
+        <div class="result" aria-live="polite">
+          <div class="metric"><b id="burnOut"></b><span>Lease-up burn reserve</span></div>
+          <div class="metric"><b id="realEquityOut"></b><span>Real equity incl. reserves</span></div>
+          <div class="metric"><b id="lowDscrOut"></b><span>Lowest lease-up DSCR</span></div>
+          <div class="metric"><b id="exitValueOut"></b><span>Stabilized value at exit cap</span></div>
+        </div>
+        <div class="result" aria-live="polite">
+          <div class="metric"><b id="devSpreadOut"></b><span>Yield-on-cost minus exit cap</span></div>
+          <div class="metric"><b id="valueCreateOut"></b><span>Value creation after reserves</span></div>
+          <div class="metric"><b id="costPsmOut"></b><span>All-in cost / gross sqm</span></div>
+          <div class="metric"><b id="warningOut"></b><span>Model warning</span></div>
+        </div>
+        <p class="small" style="margin-top:14px">Screening caveat: rent, occupancy, efficiency, and customer mix are not independent in real life. High consumer €/sqm usually means slower fill and more churn; business-heavy occupancy usually lowers blended rent. The warning tile flags obviously aggressive combinations, but a site-specific demand model still matters more than slider optimism.</p>
+      </div>
+    </section>
+
+    <section id="risks">
+      <div class="wrap">
+        <h2>Portugal-Specific Risk Assessment</h2>
+        <div class="grid">
+          <div class="card warning">
+            <h3>Licensing and fire safety</h3>
+            <p>Self-storage sits close to warehouse/storage use, but conversion can trigger municipal use-class, building-works, accessibility, and SCIE/fire-safety requirements. This is the first diligence gate.</p>
+          </div>
+          <div class="card warning">
+            <h3>Acquisition price risk</h3>
+            <p>Greater Lisbon industrial stock is tight. If logistics users can pay €4-7/sqm/month rent or buyers pay €800-1,500/sqm, the storage project must beat that alternative use. A commercial acquisition also needs roughly 6.5% IMT plus 0.8% stamp duty included in the basis gate.</p>
+          </div>
+          <div class="card warning">
+            <h3>Ramp-up risk</h3>
+            <p>The business may look bad for 24-36 months. Debt service starts immediately; occupancy does not. Initial leverage should be sized for the lease-up burn, not the stabilized DSCR.</p>
+          </div>
+          <div class="card warning">
+            <h3>VAT treatment</h3>
+            <p>Self-storage in Portugal is generally a VATable service at the standard 23% rate. That can allow input VAT recovery on fit-out capex, but consumer customers cannot reclaim VAT on rent, while many business customers can. This pushes the model toward a sharper customer-mix view.</p>
+          </div>
+          <div class="card">
+            <h3>Marketing risk</h3>
+            <p>Operators increasingly depend on website, search, reviews, dynamic pricing, and conversion tracking. A hidden industrial site with weak SEO will not fill just because storage demand exists.</p>
+          </div>
+          <div class="card">
+            <h3>Security and insurance</h3>
+            <p>24/7 access needs CCTV, individual alarms/locks, access logs, insurance structure, prohibited-goods clauses, and robust default/auction process.</p>
+          </div>
+          <div class="card">
+            <h3>Customer mix</h3>
+            <p>Consumers give higher €/sqm but churn more. Businesses take larger spaces at lower €/sqm but can stabilise occupancy. The target mix should be 55-65% consumer, 35-45% business.</p>
+          </div>
+          <div class="card">
+            <h3>Exit value</h3>
+            <p>The conversion only creates value if stabilized yield-on-cost clears the eventual self-storage exit cap rate by enough to pay for lease-up burn, reserves, and execution risk. A thin spread is not worth the operating complexity.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="next">
+      <div class="wrap">
+        <h2>What Would Be Needed</h2>
+        <div class="two">
+          <div class="card green">
+            <h3>Deal-screening checklist</h3>
+            <ul>
+              <li>2,000-4,000sqm gross building or expandable industrial site.</li>
+              <li>At least 60-70% conversion to net rentable units; underwrite the stress case at 60%, not only the 65% target.</li>
+              <li>Direct van access, loading, parking, 24/7 gate possibility.</li>
+              <li>Dry, secure, no major roof/flood/humidity problem.</li>
+              <li>Existing warehouse/industrial/commercial use, not residential grey zone.</li>
+              <li>All-in cost below €1,500/gross sqm after works, IMT, stamp duty, soft costs, and VAT treatment.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Validation before offer</h3>
+            <ul>
+              <li>Call 8-12 competitors as a customer for real quotes, discounts, availability, deposits, and waiting lists.</li>
+              <li>Map every competitor within 3-5 km drive radius, estimate rentable sqm supply, and calculate supply per capita before underwriting 80-85% occupancy.</li>
+              <li>Run Google Ads test landing pages for Cascais town, Alcabideche/Abóboda, Caparica, and only specific Sintra micro-catchments to measure lead cost.</li>
+              <li>Ask architect/fire engineer for a fast SCIE/use-class memo on each candidate site.</li>
+              <li>Get bank term sheets under three cases: 50%, 60%, and 65% LTC.</li>
+              <li>Size equity for 36 months of lease-up burn plus operating/debt-service reserves before calculating cash-on-cash.</li>
+              <li>Pre-sell business units to trades/e-commerce/tourism operators before closing.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card warning" style="margin-top:18px">
+          <h3>Final recommendation</h3>
+          <p>I would not start by buying raw land. I would hunt for a mispriced warehouse/factory in Cascais town/Alcabideche/Abóboda or a proven under-supplied Sintra micro-catchment, preferably with an option structure, and validate demand before committing full capex. Caparica is interesting only if the site is cheap and you can prove a local underserved customer base; central Almada is already too contested unless the building is exceptional.</p>
+          <p>The opportunity exists, but it is a real-estate acquisition game first and an operating business second. The winner will be whoever buys the right box at the right basis.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <h2>Sources</h2>
+        <div class="source-list">
+          <p><a href="https://allstorage.pt/en">Allstorage Lisbon/Almada pricing and locations</a></p>
+          <p><a href="https://stokarea.pt/pt/self-storage/sintra">Stokarea Sintra page</a> and <a href="https://stokarea.pt/pt/unidades/cacilhas-almada">Stokarea Cacilhas/Almada page</a></p>
+          <p><a href="https://www.box2boxstorage.com/pt-en/blog/self-storage-cascais-guide">Box2Box Cascais self-storage guide 2026</a></p>
+          <p><a href="https://www.bluespace.pt/en/centers">Bluespace centre locator</a></p>
+          <p><a href="https://www.fedessa.org/static/f6762ae6-c097-4bdd-84ac37c2b12e3cb7/70e08602-eab5-407b-98f4a1c839f22677/FEDESSA-European-Industry-Report-2025.pdf">FEDESSA / CBRE European Self Storage Industry Report 2025</a></p>
+          <p><a href="https://s1.q4cdn.com/588671402/files/doc_financials/2025/ar/2025-PSA-Annual-Report-Final-Bookmarked.pdf">Public Storage 2025 Annual Report</a></p>
+          <p><a href="https://www.durgesta.com/en/articles/industrial-warehouse-prices-greater-lisbon-2026">Durgesta Greater Lisbon industrial warehouse prices 2026</a></p>
+          <p><a href="https://www.durgesta.com/en/articles/warehouse-fit-out-costs-and-licensing">Durgesta warehouse fit-out costs and licensing 2026</a></p>
+          <p><a href="https://www.jll.com/pt-pt/insights/market-dynamics/portugal-industrial">JLL Portugal Industrial Market Dynamics Q1 2026</a></p>
+          <p><a href="https://euribor-rate.eu/euribor-12-month">12-month Euribor daily rate</a> and current 3M/6M Euribor references</p>
+          <p><a href="https://taxsummaries.pwc.com/portugal/corporate/other-taxes">PwC Portugal corporate tax summary: IMT and stamp duty</a></p>
+          <p><a href="https://www2.gov.pt/en-GB/cidadaos-europeus-viajar-viver-e-fazer-negocios-em-portugal/impostos-para-atividades-economicas-em-portugal/imposto-sobre-valor-acrescentado-iva-em-portugal">gov.pt VAT rate summary</a> and <a href="https://www.cnmf.pt/en/comunicacao/iva-no-self-storage-aplicacao-da-taxa-de-23/1466/">CNMF note on VAT for self-storage</a></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      Prepared for Julian. Screening memo only; not legal, tax, financing, architectural, or investment advice. Next serious step is site-specific diligence with a local architect/fire engineer and bank term sheets.
+    </div>
+  </footer>
+
+  <script>
+    const ids = ["cost", "rent", "occ", "eff", "margin", "debt", "rate", "sqm", "anc", "useProperty", "purchase", "fitout", "soft", "recoverVat", "exitCap"];
+    const fmtEUR = new Intl.NumberFormat("en-IE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
+    const fmtPct = new Intl.NumberFormat("en-IE", { style: "percent", maximumFractionDigits: 1 });
+    const fmtNum = new Intl.NumberFormat("en-IE", { maximumFractionDigits: 0 });
+
+    function annuityPayment(principal, annualRate, years) {
+      if (principal <= 0) return 0;
+      const r = annualRate / 12;
+      const n = years * 12;
+      return principal * r / (1 - Math.pow(1 + r, -n)) * 12;
+    }
+
+    function calc() {
+      const useProperty = document.getElementById("useProperty").checked;
+      const purchase = Number(document.getElementById("purchase").value) * 1000000;
+      const fitout = Number(document.getElementById("fitout").value);
+      const soft = Number(document.getElementById("soft").value) / 100;
+      const recoverVat = document.getElementById("recoverVat").checked;
+      const exitCap = Number(document.getElementById("exitCap").value) / 100;
+      const manualCost = Number(document.getElementById("cost").value) * 1000000;
+      const rent = Number(document.getElementById("rent").value);
+      const occ = Number(document.getElementById("occ").value) / 100;
+      const eff = Number(document.getElementById("eff").value) / 100;
+      const margin = Number(document.getElementById("margin").value) / 100;
+      const debtShare = Number(document.getElementById("debt").value) / 100;
+      const rate = Number(document.getElementById("rate").value) / 100;
+      const sqm = Number(document.getElementById("sqm").value);
+      const anc = Number(document.getElementById("anc").value) / 100;
+
+      const acquisitionTax = purchase * 0.073;
+      const fitoutBase = fitout * sqm;
+      const unrecoveredVat = recoverVat ? 0 : fitoutBase * 0.23;
+      const softCosts = (purchase + fitoutBase) * soft;
+      const propertyCost = purchase + acquisitionTax + fitoutBase + unrecoveredVat + softCosts;
+      const cost = useProperty ? propertyCost : manualCost;
+      const rentable = sqm * eff;
+      const revenue = rentable * rent * 12 * occ * (1 + anc);
+      const noi = revenue * margin;
+      const debt = cost * debtShare;
+      const equity = cost - debt;
+      const debtService = annuityPayment(debt, rate, 20);
+      const cashAfterDebt = noi - debtService;
+      const dscr = debtService > 0 ? noi / debtService : 99;
+      const rampOccs = [0.30, 0.55, Math.min(0.80, occ)];
+      const fixedLeaseupDrag = revenue * 0.08;
+      const rampRows = rampOccs.map(rampOcc => {
+        const rampRevenue = rentable * rent * 12 * Math.min(rampOcc, occ) * (1 + anc);
+        const rampNoi = rampRevenue * margin - fixedLeaseupDrag;
+        return {
+          noi: rampNoi,
+          burn: Math.max(0, debtService - rampNoi),
+          dscr: debtService > 0 ? rampNoi / debtService : 99
+        };
+      });
+      const leaseupBurn = rampRows.reduce((sum, row) => sum + row.burn, 0);
+      const operatingReserve = debtService * 0.5 + revenue * 0.04;
+      const realEquity = equity + leaseupBurn + operatingReserve;
+      const coc = realEquity > 0 ? cashAfterDebt / realEquity : 0;
+      const lowDscr = rampRows.reduce((min, row) => Math.min(min, row.dscr), 99);
+      const exitValue = noi / exitCap;
+      const valueCreation = exitValue - cost - leaseupBurn - operatingReserve;
+      const yieldOnCost = noi / cost;
+      const devSpread = yieldOnCost - exitCap;
+      const costPsm = cost / sqm;
+
+      let warning = "OK";
+      if (rent >= 30 && occ >= 90) warning = "Rent/occ too aggressive";
+      else if (eff > 65) warning = "Stress at 60% efficiency";
+      else if (devSpread < 0.01) warning = "Thin value spread";
+      else if (lowDscr < 0.75) warning = "Heavy lease-up burn";
+
+      document.getElementById("purchaseVal").textContent = fmtEUR.format(purchase);
+      document.getElementById("fitoutVal").textContent = fmtEUR.format(fitout) + "/sqm";
+      document.getElementById("softVal").textContent = Math.round(soft * 100) + "%";
+      document.getElementById("exitCapVal").textContent = (exitCap * 100).toFixed(2) + "%";
+      document.getElementById("costVal").textContent = fmtEUR.format(cost);
+      document.getElementById("cost").disabled = useProperty;
+      document.getElementById("rentVal").textContent = "€" + rent + "/sqm/month";
+      document.getElementById("occVal").textContent = Math.round(occ * 100) + "%";
+      document.getElementById("effVal").textContent = Math.round(eff * 100) + "%";
+      document.getElementById("marginVal").textContent = Math.round(margin * 100) + "%";
+      document.getElementById("debtVal").textContent = Math.round(debtShare * 100) + "%";
+      document.getElementById("rateVal").textContent = (rate * 100).toFixed(2) + "%";
+      document.getElementById("sqmVal").textContent = sqm.toLocaleString("en-IE") + " sqm";
+      document.getElementById("ancVal").textContent = Math.round(anc * 100) + "%";
+
+      document.getElementById("revOut").textContent = fmtEUR.format(revenue);
+      document.getElementById("noiOut").textContent = fmtEUR.format(noi);
+      document.getElementById("yieldOut").textContent = fmtPct.format(yieldOnCost);
+      document.getElementById("cashOut").textContent = fmtPct.format(coc);
+      document.getElementById("equityOut").textContent = fmtEUR.format(equity);
+      document.getElementById("debtOut").textContent = fmtEUR.format(debt);
+      document.getElementById("dsOut").textContent = fmtEUR.format(debtService);
+      document.getElementById("dscrOut").textContent = dscr > 20 ? "No debt" : dscr.toFixed(2) + "x";
+      document.getElementById("burnOut").textContent = fmtEUR.format(leaseupBurn + operatingReserve);
+      document.getElementById("realEquityOut").textContent = fmtEUR.format(realEquity);
+      document.getElementById("lowDscrOut").textContent = lowDscr > 20 ? "No debt" : lowDscr.toFixed(2) + "x";
+      document.getElementById("exitValueOut").textContent = fmtEUR.format(exitValue);
+      document.getElementById("devSpreadOut").textContent = (devSpread * 100).toFixed(1) + " pts";
+      document.getElementById("valueCreateOut").textContent = fmtEUR.format(valueCreation);
+      document.getElementById("costPsmOut").textContent = "€" + fmtNum.format(costPsm) + "/sqm";
+      document.getElementById("warningOut").textContent = warning;
+    }
+
+    ids.forEach(id => {
+      const node = document.getElementById(id);
+      node.addEventListener("input", calc);
+      node.addEventListener("change", calc);
+    });
+    calc();
+  </script>
+</body>
+</html>
